@@ -79,12 +79,14 @@ async function validateUser(email, loginPassword) {
   let response = await fetch(url);
   let responseData = await response.json();
   let validResponse = responseData[0];
+  alert(validResponse)
   if (validResponse == null ) {
     
     return false;
   } else if (loginPassword == validResponse.password) {
     return true;
   } else if ( loginPassword != validResponse.password){
+    
     alert("Incorrect password or email")
   }
 }
@@ -108,7 +110,6 @@ async function saveUser(newUser) {
 async function createDashboard(){
     const adminEmployeeNumbers = await  fetch(url + "/counts/" + adminRole);
 		const adminCount = await adminEmployeeNumbers.json();
-		console.log(adminCount)
     const salesEmployeeNumbers = await fetch(url + "/counts/" + salesRole);
 		const salesCount = await salesEmployeeNumbers.json();
     const operationsEmployeeNumber = await fetch( url + "/counts/" + operationsRole)
@@ -124,11 +125,8 @@ async function createDashboard(){
  async function createTable(currentUser) {
 		const response = await fetch(url);
 		const data = await response.json();
-		
 		data.map((user) => {
 			let tr = creatRow(user);
-			console.log(currentUser)
-			
 			 if (user.email == currentUser.email) {
 				createEditBtn(tr,user.email)
 			} else if (currentUser.role == adminRole) {
@@ -222,6 +220,7 @@ function promptEditForm(currentUser){
 async function submit() {
   currentUser.name = editFirstName.value+' '+editlastname.value
   currentUser.gender = editGender.value
+  alert("here")
   await fetch(`${url}/${currentUser.email}`,{
     method:'PUT',
     headers: {
@@ -229,7 +228,7 @@ async function submit() {
     },
     body: JSON.stringify(currentUser),
   }).then(response =>{
-    console.log(response.json)
+    alert(response.json())
   })
   let tr = creatRow(currentUser);
   createEditBtn(tr);
